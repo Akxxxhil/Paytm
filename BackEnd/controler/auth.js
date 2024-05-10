@@ -14,8 +14,8 @@ exports.signup = async (req, res) => {
         }
 
         const newUser = await User.create({ userName, firstName, lastName, password });
-        const payload={
-            userId: newUser._id 
+        const payload = {
+            userId: newUser._id
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -34,3 +34,31 @@ exports.signup = async (req, res) => {
         });
     }
 };
+
+exports.login = async (req, res) => {
+    try {
+        const { userName, password } = req.body;
+        const exisitingUser = await User.findOne({ userName });
+        if (!exisitingUser) {
+            return res.status(411).json({
+                message: "Incorrect inputs or SignUp first"
+            })
+        }
+        const payloadlogin={
+            userId: exisitingUser._id
+        }
+        const tokenlogin=jwt.sign(payloadlogin,process.env.JWT_SECRET, { expiresIn: '1h' })
+
+        return res.status(200).json({
+            success: true,
+            token: tokenlogin,
+            message:"User loged in successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(411).json({
+            success: false,
+            message: "Error while logging in"
+        })
+    }
+}
