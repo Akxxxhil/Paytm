@@ -4,7 +4,7 @@ const Router=express.Router()
 
 
 const {signup,login,update} =require("../controler/auth")
-const {userBalance}=require("../controler/account")
+const {userBalance,transfer}=require("../controler/account")
 
 //Router.post("/login",login)signin
 Router.post("/user/signup",signup)
@@ -12,7 +12,8 @@ Router.post("/user/login",login)
 Router.put("/user/update",authMiddleware,update)
 
 
-Router.get("/userBalance",authMiddleware,userBalance);
+Router.get("/account/userBalance",authMiddleware,userBalance);
+Router.post("/account/transfer",authMiddleware,transfer)
 
 
 module.exports=Router
