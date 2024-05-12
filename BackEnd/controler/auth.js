@@ -1,4 +1,5 @@
 const User = require("../models/userSchema");
+const Account=require("../models/accountSchema");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -26,11 +27,17 @@ exports.signup = async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "1h",
         });
+        const userBalance= await Account.create({
+            userName:newUser.userName,
+            userId: newUser._id,
+            balance:Math.floor(Math.random()*1000)+1
+        })
 
         return res.status(200).json({
             success: true,
             data: newUser,
-            token: token,
+            token:token,
+            userBalance:userBalance,
             message: "User created successfully",
         });
     } catch (error) {
