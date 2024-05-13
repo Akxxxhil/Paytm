@@ -30,7 +30,7 @@ exports.signup = async (req, res) => {
         const userBalance= await Account.create({
             userName:newUser.userName,
             userId: newUser._id,
-            balance:Math.floor(Math.random()*1000)+1
+            balance:Math.floor(Math.random()*10000)+1
         })
 
         return res.status(200).json({
